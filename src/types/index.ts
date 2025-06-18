@@ -10,6 +10,8 @@ export interface Link {
   userId: string;
   originalUrl: string;
   shortCode: string;
+  shortUrl: string;
+  openInNewTab: boolean;
   customAlias?: string;
   title?: string;
   description?: string;

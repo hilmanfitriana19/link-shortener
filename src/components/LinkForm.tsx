@@ -11,6 +11,7 @@ export const LinkForm: React.FC = () => {
   const [customAlias, setCustomAlias] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [openInNewTab, setOpenInNewTab] = useState(true);
   const [loading, setLoading] = useState(false);
   const { themeConfig } = useTheme();
 
@@ -28,6 +29,7 @@ export const LinkForm: React.FC = () => {
         customAlias: customAlias.trim() || undefined,
         title: title.trim() || undefined,
         description: description.trim() || undefined,
+        openInNewTab,
         userId: user.uid,
         isActive: true,
       });
@@ -37,6 +39,7 @@ export const LinkForm: React.FC = () => {
       setCustomAlias('');
       setTitle('');
       setDescription('');
+      setOpenInNewTab(true);
     } catch (error) {
       console.error('Error creating link:', error);
     } finally {
@@ -110,6 +113,19 @@ export const LinkForm: React.FC = () => {
             rows={3}
             className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
           />
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <input
+            id="openNewTab"
+            type="checkbox"
+            checked={openInNewTab}
+            onChange={(e) => setOpenInNewTab(e.target.checked)}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <label htmlFor="openNewTab" className="text-sm text-gray-700">
+            Open short link in new tab
+          </label>
         </div>
 
         <button
