@@ -2,9 +2,32 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+import { fetchLinkBySlug, incrementLinkClicks } from './utils/linkApi';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+const redirectMatch = window.location.pathname.match(/^\/redirect\/([^/?#]+)/);
+if (redirectMatch) {
+  const slug = decodeURIComponent(redirectMatch[1]);
+  (async () => {
+    const link = await fetchLinkBySlug(slug);
+    if (link) {
+      try {
+        await incrementLinkClicks(link.id);
+      } catch (e) {
+        console.error('Failed to record click:', e);
+      }
+      if (link.openInNewTab) {
+        window.open(link.originalUrl, '_blank');
+      } else {
+        window.location.replace(link.originalUrl);
+      }
+    } else {
+      document.body.innerHTML = '<h1>Link not found</h1>';
+    }
+  })();
+} else {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+}

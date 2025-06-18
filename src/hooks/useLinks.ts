@@ -41,7 +41,9 @@ export const useLinks = (userId: string | null) => {
           ...data,
           shortUrl:
             data.shortUrl ||
-            `${basePath.replace(/\/$/, '')}/${data.customAlias || data.shortCode}`,
+            `${basePath.replace(/\/$/, '')}/redirect/${
+              data.customAlias || data.shortCode
+            }`,
           openInNewTab: data.openInNewTab ?? true,
           createdAt: data.createdAt?.toDate() || new Date(),
           updatedAt: data.updatedAt?.toDate() || new Date(),
@@ -62,7 +64,7 @@ export const useLinks = (userId: string | null) => {
 
     try {
       const basePath = window.location.origin + import.meta.env.BASE_URL;
-      const shortUrl = `${basePath.replace(/\/$/, '')}/${linkData.shortCode}`;
+      const shortUrl = `${basePath.replace(/\/$/, '')}/redirect/${linkData.shortCode}`;
       await addDoc(collection(db, 'links'), {
         ...linkData,
         shortUrl,
