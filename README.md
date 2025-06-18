@@ -129,7 +129,7 @@ VITE_FIREBASE_APP_ID=your_app_id
 
 ### Using Short Links
 
-Access any generated link at `/<userId>/<code>` on your domain. The app will
+Access any generated link at `/redirect/<code>` on your domain. The app will
 automatically redirect you to the original URL.
 
 ## Theme System
