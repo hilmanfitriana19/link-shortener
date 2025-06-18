@@ -25,7 +25,7 @@ A modern, feature-rich link shortener application built with React, TypeScript, 
 1. Create a new Firebase project at [Firebase Console](https://console.firebase.google.com)
 2. Enable Authentication and Firestore Database
 3. Configure Google Sign-in method in Authentication
-4. Update `src/config/firebase.ts` with your Firebase configuration
+4. Copy `.env.example` to `.env` and fill in your Firebase configuration
 
 ## Firestore Database Structure
 
@@ -107,7 +107,7 @@ service cloud.firestore {
    ```bash
    npm install
    ```
-3. Update Firebase configuration in `src/config/firebase.ts`
+3. Copy `.env.example` to `.env` and update it with your Firebase values
 4. Start the development server:
    ```bash
    npm run dev
@@ -115,7 +115,8 @@ service cloud.firestore {
 
 ## Environment Variables
 
-Create a `.env` file with your Firebase configuration:
+Create a `.env` file with your Firebase configuration. You can use the
+provided `.env.example` file as a starting point:
 
 ```env
 VITE_FIREBASE_API_KEY=your_api_key
