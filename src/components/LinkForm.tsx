@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import { Plus, Globe, Type, FileText } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
+import { useAuth } from '../hooks/useAuth';
+import { useLinks } from '../hooks/useLinks';
 
-interface LinkFormProps {
-  onSubmit: (data: {
-    originalUrl: string;
-    customAlias?: string;
-    title?: string;
-    description?: string;
-  }) => Promise<void>;
-}
-
-export const LinkForm: React.FC<LinkFormProps> = ({ onSubmit }) => {
+export const LinkForm: React.FC = () => {
+  const { user } = useAuth();
+  const { createLink } = useLinks(user?.uid || null);
   const [originalUrl, setOriginalUrl] = useState('');
   const [customAlias, setCustomAlias] = useState('');
   const [title, setTitle] = useState('');
@@ -19,19 +14,24 @@ export const LinkForm: React.FC<LinkFormProps> = ({ onSubmit }) => {
   const [loading, setLoading] = useState(false);
   const { themeConfig } = useTheme();
 
+  const generateShortCode = () => Math.random().toString(36).substring(2, 8);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!originalUrl.trim()) return;
+    if (!originalUrl.trim() || !user) return;
 
     setLoading(true);
     try {
-      await onSubmit({
+      await createLink({
         originalUrl: originalUrl.trim(),
+        shortCode: customAlias.trim() || generateShortCode(),
         customAlias: customAlias.trim() || undefined,
         title: title.trim() || undefined,
         description: description.trim() || undefined,
+        userId: user.uid,
+        isActive: true,
       });
-      
+
       // Reset form
       setOriginalUrl('');
       setCustomAlias('');

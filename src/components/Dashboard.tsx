@@ -9,28 +9,11 @@ import { Link } from '../types';
 
 export const Dashboard: React.FC = () => {
   const { user } = useAuth();
-  const { links, loading, createLink, updateLink, deleteLink } = useLinks(user?.uid || null);
+  const { links, loading, updateLink, deleteLink } = useLinks(user?.uid || null);
   const { themeConfig } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState<'all' | 'active' | 'inactive'>('all');
 
-  const generateShortCode = () => {
-    return Math.random().toString(36).substring(2, 8);
-  };
-
-  const handleCreateLink = async (data: {
-    originalUrl: string;
-    customAlias?: string;
-    title?: string;
-    description?: string;
-  }) => {
-    await createLink({
-      ...data,
-      userId: user!.uid,
-      shortCode: data.customAlias || generateShortCode(),
-      isActive: true,
-    });
-  };
 
   const handleCopyLink = (shortUrl: string) => {
     navigator.clipboard.writeText(shortUrl);
@@ -122,7 +105,7 @@ export const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Link Creation Form */}
           <div className="lg:col-span-1">
-            <LinkForm onSubmit={handleCreateLink} />
+            <LinkForm />
           </div>
 
           {/* Links List */}
