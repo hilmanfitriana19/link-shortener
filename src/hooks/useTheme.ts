@@ -29,6 +29,13 @@ const themes: Record<Theme, ThemeConfig> = {
     secondary: 'from-orange-600 to-red-500',
     accent: 'orange',
     gradient: 'bg-gradient-to-br from-orange-50 to-red-50'
+  },
+  dark: {
+    name: 'Dark Mode',
+    primary: 'from-gray-800 to-gray-700',
+    secondary: 'from-gray-700 to-gray-600',
+    accent: 'gray',
+    gradient: 'bg-gradient-to-br from-gray-900 to-gray-800'
   }
 };
 
@@ -39,12 +46,20 @@ export const useTheme = () => {
     const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme && themes[savedTheme]) {
       setCurrentTheme(savedTheme);
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
     }
   }, []);
 
   const changeTheme = (theme: Theme) => {
     setCurrentTheme(theme);
     localStorage.setItem('theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   return {

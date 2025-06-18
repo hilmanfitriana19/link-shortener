@@ -134,11 +134,12 @@ automatically redirect you to the original URL.
 
 ## Theme System
 
-The application supports 4 beautiful themes:
+The application supports 5 beautiful themes:
 - **Ocean Blue** (default) - Bright blue gradients
 - **Royal Purple** - Purple to pink gradients
 - **Forest Green** - Green to teal gradients
 - **Sunset Orange** - Orange to red gradients
+- **Dark Mode** - Sleek dark appearance
 
 Users can switch themes using the palette icon in the header, and their preference is saved to localStorage.
 

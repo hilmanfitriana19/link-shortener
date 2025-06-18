@@ -8,15 +8,15 @@ export const AuthScreen: React.FC = () => {
   const { themeConfig } = useTheme();
 
   return (
-    <div className={`min-h-screen ${themeConfig.gradient} flex items-center justify-center px-4`}>
+    <div className={`min-h-screen ${themeConfig.gradient} flex items-center justify-center px-4 dark:text-gray-100`}>
       <div className="max-w-md w-full">
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/20">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/20 dark:border-gray-700">
           <div className="text-center mb-8">
             <div className={`inline-flex p-4 bg-gradient-to-r ${themeConfig.primary} rounded-2xl mb-4`}>
               <LinkIcon className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">LinkShort</h1>
-            <p className="text-gray-600">
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">LinkShort</h1>
+            <p className="text-gray-600 dark:text-gray-300">
               Shorten your links with style and track their performance
             </p>
           </div>
@@ -37,7 +37,7 @@ export const AuthScreen: React.FC = () => {
           </button>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               By continuing, you agree to our Terms of Service and Privacy Policy
             </p>
           </div>

@@ -33,19 +33,19 @@ export const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete, onCo
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6 hover:shadow-xl transition-all duration-200">
+    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 dark:border-gray-700 p-6 hover:shadow-xl transition-all duration-200">
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           {link.title && (
-            <h3 className="font-semibold text-gray-800 mb-1">{link.title}</h3>
+            <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-1">{link.title}</h3>
           )}
           {link.description && (
-            <p className="text-gray-600 text-sm mb-3">{link.description}</p>
+            <p className="text-gray-600 dark:text-gray-300 text-sm mb-3">{link.description}</p>
           )}
           
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
-              <span className="text-xs text-gray-500 uppercase tracking-wider">Short URL:</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Short URL:</span>
               <button
                 onClick={() => onCopy(shortUrl)}
                 className={`text-sm font-mono bg-gradient-to-r ${themeConfig.primary} text-white px-3 py-1 rounded-lg hover:shadow-md transition-all duration-200 flex items-center space-x-1`}
@@ -56,13 +56,13 @@ export const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete, onCo
             </div>
             
             <div className="flex items-center space-x-2">
-              <span className="text-xs text-gray-500 uppercase tracking-wider">Original:</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Original:</span>
               <div className="flex items-center space-x-1">
-                <span className="text-sm text-gray-700 font-mono break-all">{displayUrl}</span>
+                <span className="text-sm text-gray-700 dark:text-gray-100 font-mono break-all">{displayUrl}</span>
                 {link.originalUrl.length > 50 && (
                   <button
                     onClick={() => setShowFullUrl(!showFullUrl)}
-                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                   >
                     {showFullUrl ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -83,8 +83,8 @@ export const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete, onCo
         </div>
       </div>
 
-      <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-        <div className="text-xs text-gray-500">
+      <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="text-xs text-gray-500 dark:text-gray-400">
           Created {formatDate(link.createdAt)}
         </div>
         
@@ -93,7 +93,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete, onCo
             href={shortUrl}
             target={link.openInNewTab ? '_blank' : '_self'}
             rel="noopener noreferrer"
-            className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             title="Open short link"
           >
             <ExternalLink className="w-4 h-4" />
@@ -101,7 +101,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete, onCo
           
           <button
             onClick={() => onEdit(link)}
-            className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+            className="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             title="Edit link"
           >
             <Edit3 className="w-4 h-4" />
@@ -109,7 +109,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete, onCo
           
           <button
             onClick={() => onDelete(link.id)}
-            className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+            className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
             title="Delete link"
           >
             <Trash2 className="w-4 h-4" />
