@@ -8,9 +8,10 @@ export const ThemeSelector: React.FC = () => {
     currentTheme,
     allThemes,
     changeTheme,
-    isDarkMode,
-    toggleDarkMode
+    toggleTheme
   } = useTheme();
+
+  const isDarkMode = currentTheme === 'dark';
 
   return (
     <div className="relative group">
@@ -37,7 +38,7 @@ export const ThemeSelector: React.FC = () => {
           ))}
           <div className="border-t border-gray-200 dark:border-gray-700 my-2" />
           <button
-            onClick={toggleDarkMode}
+            onClick={toggleTheme}
             className="w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700"
           >
             {isDarkMode ? (
