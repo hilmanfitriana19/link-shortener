@@ -6,9 +6,9 @@ import { fetchLinkBySlug, incrementLinkClicks } from './utils/linkApi';
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 const path = window.location.pathname.replace(basePath, '');
-const redirectMatch = path.match(/^\/redirect\/([^/?#]+)/);
+const redirectMatch = path.match(/^\/([^/]+)\/([^/?#]+)/);
 if (redirectMatch) {
-  const slug = decodeURIComponent(redirectMatch[1]);
+  const slug = decodeURIComponent(redirectMatch[2]);
   (async () => {
     const link = await fetchLinkBySlug(slug);
     if (link) {
@@ -18,7 +18,7 @@ if (redirectMatch) {
         console.error('Failed to record click:', e);
       }
       if (link.openInNewTab) {
-        window.open(link.originalUrl, '_blank');
+        window.open(link.originalUrl, '_self', 'noopener,noreferrer');
       } else {
         window.location.replace(link.originalUrl);
       }
