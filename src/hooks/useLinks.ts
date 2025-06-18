@@ -33,12 +33,22 @@ export const useLinks = (userId: string | null) => {
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const linksData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate() || new Date(),
-        updatedAt: doc.data().updatedAt?.toDate() || new Date(),
-      })) as Link[];
+      const linksData = snapshot.docs.map(doc => {
+        const data = doc.data();
+        const basePath = window.location.origin + import.meta.env.BASE_URL;
+        return {
+          id: doc.id,
+          ...data,
+          shortUrl:
+            data.shortUrl ||
+            `${basePath.replace(/\/$/, '')}/${data.userId}/${
+              data.customAlias || data.shortCode
+            }`,
+          openInNewTab: data.openInNewTab ?? true,
+          createdAt: data.createdAt?.toDate() || new Date(),
+          updatedAt: data.updatedAt?.toDate() || new Date(),
+        } as Link;
+      });
 
       setLinks(linksData);
       setLoading(false);
@@ -47,12 +57,17 @@ export const useLinks = (userId: string | null) => {
     return unsubscribe;
   }, [userId]);
 
-  const createLink = async (linkData: Omit<Link, 'id' | 'createdAt' | 'updatedAt' | 'clicks'>) => {
+  const createLink = async (
+    linkData: Omit<Link, 'id' | 'createdAt' | 'updatedAt' | 'clicks' | 'shortUrl'>
+  ) => {
     if (!userId) return;
 
     try {
+      const basePath = window.location.origin + import.meta.env.BASE_URL;
+      const shortUrl = `${basePath.replace(/\/$/, '')}/${userId}/${linkData.shortCode}`;
       await addDoc(collection(db, 'links'), {
         ...linkData,
+        shortUrl,
         userId,
         clicks: 0,
         createdAt: Timestamp.now(),

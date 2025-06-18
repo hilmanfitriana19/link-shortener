@@ -14,7 +14,11 @@ export const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete, onCo
   const [showFullUrl, setShowFullUrl] = useState(false);
   const { themeConfig } = useTheme();
   
-  const shortUrl = `https://short.ly/${link.customAlias || link.shortCode}`;
+  const shortUrl =
+    link.shortUrl ||
+    `${window.location.origin}${import.meta.env.BASE_URL.replace(/\/$/, '')}/${
+      link.userId
+    }/${link.customAlias || link.shortCode}`;
   const displayUrl = showFullUrl ? link.originalUrl : 
     link.originalUrl.length > 50 ? link.originalUrl.substring(0, 50) + '...' : link.originalUrl;
 
@@ -86,11 +90,11 @@ export const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete, onCo
         
         <div className="flex items-center space-x-2">
           <a
-            href={link.originalUrl}
-            target="_blank"
+            href={shortUrl}
+            target={link.openInNewTab ? '_blank' : '_self'}
             rel="noopener noreferrer"
             className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
-            title="Visit original link"
+            title="Open short link"
           >
             <ExternalLink className="w-4 h-4" />
           </a>

@@ -1,42 +1,45 @@
 import React, { useState } from 'react';
 import { Plus, Globe, Type, FileText } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
+import { useAuth } from '../hooks/useAuth';
+import { useLinks } from '../hooks/useLinks';
 
-interface LinkFormProps {
-  onSubmit: (data: {
-    originalUrl: string;
-    customAlias?: string;
-    title?: string;
-    description?: string;
-  }) => Promise<void>;
-}
-
-export const LinkForm: React.FC<LinkFormProps> = ({ onSubmit }) => {
+export const LinkForm: React.FC = () => {
+  const { user } = useAuth();
+  const { createLink } = useLinks(user?.uid || null);
   const [originalUrl, setOriginalUrl] = useState('');
   const [customAlias, setCustomAlias] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [openInNewTab, setOpenInNewTab] = useState(true);
   const [loading, setLoading] = useState(false);
   const { themeConfig } = useTheme();
 
+  const generateShortCode = () => Math.random().toString(36).substring(2, 8);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!originalUrl.trim()) return;
+    if (!originalUrl.trim() || !user) return;
 
     setLoading(true);
     try {
-      await onSubmit({
+      await createLink({
         originalUrl: originalUrl.trim(),
+        shortCode: customAlias.trim() || generateShortCode(),
         customAlias: customAlias.trim() || undefined,
         title: title.trim() || undefined,
         description: description.trim() || undefined,
+        openInNewTab,
+        userId: user.uid,
+        isActive: true,
       });
-      
+
       // Reset form
       setOriginalUrl('');
       setCustomAlias('');
       setTitle('');
       setDescription('');
+      setOpenInNewTab(true);
     } catch (error) {
       console.error('Error creating link:', error);
     } finally {
@@ -110,6 +113,19 @@ export const LinkForm: React.FC<LinkFormProps> = ({ onSubmit }) => {
             rows={3}
             className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
           />
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <input
+            id="openNewTab"
+            type="checkbox"
+            checked={openInNewTab}
+            onChange={(e) => setOpenInNewTab(e.target.checked)}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <label htmlFor="openNewTab" className="text-sm text-gray-700">
+            Open short link in new tab
+          </label>
         </div>
 
         <button
