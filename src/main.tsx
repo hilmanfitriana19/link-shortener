@@ -4,9 +4,11 @@ import App from './App.tsx';
 import './index.css';
 import { fetchLinkBySlug, incrementLinkClicks } from './utils/linkApi';
 
-const redirectMatch = window.location.pathname.match(/^\/redirect\/([^/?#]+)/);
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+const path = window.location.pathname.replace(basePath, '');
+const redirectMatch = path.match(/^\/([^/]+)\/([^/?#]+)/);
 if (redirectMatch) {
-  const slug = decodeURIComponent(redirectMatch[1]);
+  const slug = decodeURIComponent(redirectMatch[2]);
   (async () => {
     const link = await fetchLinkBySlug(slug);
     if (link) {
