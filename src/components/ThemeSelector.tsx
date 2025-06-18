@@ -1,10 +1,16 @@
 import React from 'react';
-import { Palette } from 'lucide-react';
+import { Palette, Moon, Sun } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 import { Theme } from '../types';
 
 export const ThemeSelector: React.FC = () => {
-  const { currentTheme, allThemes, changeTheme } = useTheme();
+  const {
+    currentTheme,
+    allThemes,
+    changeTheme,
+    isDarkMode,
+    toggleDarkMode
+  } = useTheme();
 
   return (
     <div className="relative group">
@@ -29,6 +35,20 @@ export const ThemeSelector: React.FC = () => {
               <span className="text-sm text-gray-700 dark:text-gray-100">{allThemes[theme].name}</span>
             </button>
           ))}
+          <div className="border-t border-gray-200 dark:border-gray-700 my-2" />
+          <button
+            onClick={toggleDarkMode}
+            className="w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700"
+          >
+            {isDarkMode ? (
+              <Sun className="w-4 h-4" />
+            ) : (
+              <Moon className="w-4 h-4" />
+            )}
+            <span className="text-sm text-gray-700 dark:text-gray-100">
+              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+            </span>
+          </button>
         </div>
       </div>
     </div>
