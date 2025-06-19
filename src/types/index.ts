@@ -29,7 +29,9 @@ export interface LinkClick {
   ip?: string;
 }
 
-export type Theme = 'blue' | 'purple' | 'green' | 'orange';
+export type Theme = 'dark';
+
+export type ThemePreference = 'dark' | 'system';
 
 export interface ThemeConfig {
   name: string;
