@@ -1,19 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
+import { resolve } from 'path'
 
 export default defineConfig({
   base: '/link-shortener/',
-  plugins: [
-    react(),
-    viteStaticCopy({
-      targets: [
-        {
-          src: 'dist/index.html',
-          dest: 'dist',
-          rename: '404.html'
-        }
-      ]
-    })
-  ]
-})
+  plugins: [react()],
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html')
+      }
+    }
+  },
+});
