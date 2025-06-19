@@ -5,7 +5,7 @@ A modern, feature-rich link shortener application built with React, TypeScript, 
 ## Features
 
 - 🔗 **Link Shortening**: Create short, memorable links from long URLs
-- 🎨 **Light, Dark & System Mode**: Choose light, dark, or follow your OS setting
+- 🎨 **Dark Mode**: Modern dark appearance across the app
 - 📊 **Analytics**: Track clicks and performance for each link
 - 🔐 **Google Authentication**: Secure login with Firebase Auth
 - 📱 **Responsive Design**: Works perfectly on all devices
@@ -134,13 +134,7 @@ automatically redirect you to the original URL.
 
 ## Theme System
 
-You can personalize the interface appearance. Three modes are available:
-
-- **Light** - Default bright appearance
-- **Dark** - Dark colors for low-light environments
-- **System** - Automatically follow your operating system preference
-
-Use the palette icon in the header to select your preferred mode. The choice is stored in `localStorage` and applied automatically on your next visit.
+The interface uses a single dark theme for a consistent experience. The theme is applied automatically on every visit.
 
 ## Deployment
 

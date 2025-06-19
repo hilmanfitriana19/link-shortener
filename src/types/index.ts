@@ -29,9 +29,9 @@ export interface LinkClick {
   ip?: string;
 }
 
-export type Theme = 'light' | 'dark';
+export type Theme = 'dark';
 
-export type ThemePreference = Theme | 'system';
+export type ThemePreference = 'dark' | 'system';
 
 export interface ThemeConfig {
   name: string;

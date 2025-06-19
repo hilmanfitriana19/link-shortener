@@ -2,7 +2,6 @@ import React from 'react';
 import { Link as LinkIcon, LogOut, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../hooks/useTheme';
-import { ThemeSelector } from './ThemeSelector';
 
 export const Header: React.FC = () => {
   const { user, logout } = useAuth();
@@ -20,8 +19,6 @@ export const Header: React.FC = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <ThemeSelector />
-            
             {user && (
               <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-2 bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg px-3 py-2">
