@@ -7,7 +7,8 @@ import {
   getRedirectResult,
   signOut,
 } from 'firebase/auth';
-import { auth, googleProvider } from '../config/firebase';
+import { auth, googleProvider, db } from '../config/firebase';
+import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -26,6 +27,42 @@ export const useAuth = () => {
 
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const saveUser = async () => {
+      try {
+        const userRef = doc(db, 'users', user.uid);
+        const snap = await getDoc(userRef);
+        if (snap.exists()) {
+          await setDoc(
+            userRef,
+            {
+              displayName: user.displayName,
+              email: user.email,
+              photoURL: user.photoURL,
+              updatedAt: Timestamp.now(),
+            },
+            { merge: true }
+          );
+        } else {
+          await setDoc(userRef, {
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
+          });
+        }
+      } catch (error) {
+        console.error('Error saving user data:', error);
+      }
+    };
+
+    saveUser();
+  }, [user]);
 
   const signInWithGoogle = async () => {
     try {
