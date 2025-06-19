@@ -114,20 +114,6 @@ export const LinkForm: React.FC = () => {
             className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none bg-white dark:bg-gray-900 dark:text-gray-100"
           />
         </div>
-
-        <div className="flex items-center space-x-2">
-          <input
-            id="openNewTab"
-            type="checkbox"
-            checked={openInNewTab}
-            onChange={(e) => setOpenInNewTab(e.target.checked)}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-          />
-          <label htmlFor="openNewTab" className="text-sm text-gray-700 dark:text-gray-300">
-            Open short link in new tab
-          </label>
-        </div>
-
         <button
           type="submit"
           disabled={loading || !originalUrl.trim()}

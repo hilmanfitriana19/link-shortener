@@ -62,6 +62,14 @@ export const useLinks = (userId: string | null) => {
   ) => {
     if (!userId) return;
 
+    if (!linkData.title) {
+      linkData.title = ""
+    }
+
+    if(!linkData.description) {
+      linkData.description = ""
+    }
+
     try {
       const basePath = window.location.origin + import.meta.env.BASE_URL;
       const shortUrl = `${basePath.replace(/\/$/, '')}/${userId}/${linkData.shortCode}`;
