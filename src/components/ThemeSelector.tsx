@@ -1,17 +1,15 @@
 import React from 'react';
-import { Palette, Moon, Sun } from 'lucide-react';
+import { Palette, Moon, Sun, Laptop2 } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
-import { Theme } from '../types';
 
 export const ThemeSelector: React.FC = () => {
-  const {
-    currentTheme,
-    allThemes,
-    changeTheme,
-    toggleTheme
-  } = useTheme();
+  const { currentTheme, preference, changePreference, toggleDark } = useTheme();
 
-  const isDarkMode = currentTheme === 'dark';
+  const options = [
+    { value: 'light', label: 'Light Mode', icon: Sun },
+    { value: 'dark', label: 'Dark Mode', icon: Moon },
+    { value: 'system', label: 'System', icon: Laptop2 }
+  ] as const;
 
   return (
     <div className="relative group">
@@ -22,32 +20,32 @@ export const ThemeSelector: React.FC = () => {
       <div className="absolute right-0 top-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-4 min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
         <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-100 mb-3">Choose Theme</h3>
         <div className="space-y-2">
-          {(Object.keys(allThemes) as Theme[]).map((theme) => (
+          {options.map((opt) => (
             <button
-              key={theme}
-              onClick={() => changeTheme(theme)}
+              key={opt.value}
+              onClick={() => changePreference(opt.value)}
               className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 ${
-                currentTheme === theme
+                preference === opt.value
                   ? 'bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600'
                   : 'hover:bg-gray-50 dark:hover:bg-gray-700 border-2 border-transparent'
               }`}
             >
-              <div className={`w-4 h-4 rounded-full bg-gradient-to-r ${allThemes[theme].primary}`} />
-              <span className="text-sm text-gray-700 dark:text-gray-100">{allThemes[theme].name}</span>
+              <opt.icon className="w-4 h-4" />
+              <span className="text-sm text-gray-700 dark:text-gray-100">{opt.label}</span>
             </button>
           ))}
           <div className="border-t border-gray-200 dark:border-gray-700 my-2" />
           <button
-            onClick={toggleTheme}
+            onClick={toggleDark}
             className="w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700"
           >
-            {isDarkMode ? (
+            {currentTheme === 'dark' ? (
               <Sun className="w-4 h-4" />
             ) : (
               <Moon className="w-4 h-4" />
             )}
             <span className="text-sm text-gray-700 dark:text-gray-100">
-              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+              Toggle Dark
             </span>
           </button>
         </div>

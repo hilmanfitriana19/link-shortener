@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Theme, ThemeConfig } from '../types';
+import { Theme, ThemeConfig, ThemePreference } from '../types';
 
 const themes: Record<Theme, ThemeConfig> = {
   light: {
@@ -19,39 +19,53 @@ const themes: Record<Theme, ThemeConfig> = {
 };
 
 export const useTheme = () => {
+  const [preference, setPreference] = useState<ThemePreference>('system');
   const [currentTheme, setCurrentTheme] = useState<Theme>('light');
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme && themes[savedTheme]) {
-      setCurrentTheme(savedTheme);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setCurrentTheme('dark');
+    const savedPref = localStorage.getItem('themePreference') as ThemePreference;
+    if (savedPref) {
+      setPreference(savedPref);
     }
   }, []);
 
-  const changeTheme = (theme: Theme) => {
-    setCurrentTheme(theme);
+  useEffect(() => {
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const updateTheme = () => {
+      const theme = preference === 'system'
+        ? systemPrefersDark.matches
+          ? 'dark'
+          : 'light'
+        : preference;
+      setCurrentTheme(theme);
+    };
+
+    updateTheme();
+    if (preference === 'system') {
+      systemPrefersDark.addEventListener('change', updateTheme);
+      return () => systemPrefersDark.removeEventListener('change', updateTheme);
+    }
+  }, [preference]);
+
+  const changePreference = (pref: ThemePreference) => {
+    setPreference(pref);
+    localStorage.setItem('themePreference', pref);
   };
 
-  const toggleTheme = () => {
-    setCurrentTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  const toggleDark = () => {
+    changePreference(currentTheme === 'dark' ? 'light' : 'dark');
   };
 
   useEffect(() => {
-    if (currentTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('theme', currentTheme);
+    document.documentElement.classList.toggle('dark', currentTheme === 'dark');
   }, [currentTheme]);
 
   return {
     currentTheme,
+    preference,
     themeConfig: themes[currentTheme],
-    allThemes: themes,
-    changeTheme,
-    toggleTheme
+    changePreference,
+    toggleDark
   };
 };
