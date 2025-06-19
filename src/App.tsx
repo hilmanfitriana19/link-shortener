@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from './hooks/useAuth';
 import { Header } from './components/Header';
-import { AuthScreen } from './components/AuthScreen';
+import { LandingPage } from './components/LandingPage';
 import { Dashboard } from './components/Dashboard';
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
   }
 
   if (!user) {
-    return <AuthScreen />;
+    return <LandingPage />;
   }
 
   return (
