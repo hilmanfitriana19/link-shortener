@@ -13,6 +13,7 @@ export const LinkForm: React.FC = () => {
   const [description, setDescription] = useState('');
   const [openInNewTab, setOpenInNewTab] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [aliasError, setAliasError] = useState('');
   const { themeConfig } = useTheme();
 
   const generateShortCode = () => Math.random().toString(36).substring(2, 8);
@@ -21,6 +22,7 @@ export const LinkForm: React.FC = () => {
     e.preventDefault();
     if (!originalUrl.trim() || !user) return;
 
+    setAliasError('');
     setLoading(true);
     try {
       await createLink({
@@ -41,7 +43,11 @@ export const LinkForm: React.FC = () => {
       setDescription('');
       setOpenInNewTab(true);
     } catch (error) {
-      console.error('Error creating link:', error);
+      if ((error as Error).message === 'ALIAS_EXISTS') {
+        setAliasError('Custom alias is already in use.');
+      } else {
+        console.error('Error creating link:', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -80,11 +86,17 @@ export const LinkForm: React.FC = () => {
           <input
             type="text"
             value={customAlias}
-            onChange={(e) => setCustomAlias(e.target.value.replace(/[^a-zA-Z0-9-_]/g, ''))}
+            onChange={(e) => {
+              setCustomAlias(e.target.value.replace(/[^a-zA-Z0-9-_]/g, ''));
+              setAliasError('');
+            }}
             placeholder="my-custom-link"
             className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-900 dark:text-gray-100"
           />
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Only letters, numbers, hyphens, and underscores allowed</p>
+          {aliasError && (
+            <p className="text-xs text-red-500 dark:text-red-400 mt-1">{aliasError}</p>
+          )}
         </div>
 
         <div>

@@ -5,6 +5,7 @@ import { useLinks } from '../hooks/useLinks';
 import { useTheme } from '../hooks/useTheme';
 import { LinkForm } from './LinkForm';
 import { LinkCard } from './LinkCard';
+import { UsernameForm } from './UsernameForm';
 import { Link } from '../types';
 
 export const Dashboard: React.FC = () => {
@@ -55,6 +56,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div className={`min-h-screen ${themeConfig.gradient} dark:text-gray-100`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <UsernameForm />
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-white/20 dark:border-gray-700">

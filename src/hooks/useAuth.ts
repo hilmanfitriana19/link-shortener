@@ -12,11 +12,22 @@ import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
+      if (user) {
+        try {
+          const snap = await getDoc(doc(db, 'users', user.uid));
+          setUsername(snap.exists() ? snap.data().username ?? null : null);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      } else {
+        setUsername(null);
+      }
       setLoading(false);
     });
 
@@ -29,7 +40,10 @@ export const useAuth = () => {
   }, []);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setUsername(null);
+      return;
+    }
 
     const saveUser = async () => {
       try {
@@ -46,6 +60,7 @@ export const useAuth = () => {
             },
             { merge: true }
           );
+          setUsername(snap.data().username ?? null);
         } else {
           await setDoc(userRef, {
             uid: user.uid,
@@ -55,6 +70,7 @@ export const useAuth = () => {
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
           });
+          setUsername(null);
         }
       } catch (error) {
         console.error('Error saving user data:', error);
@@ -85,5 +101,20 @@ export const useAuth = () => {
     }
   };
 
-  return { user, loading, signInWithGoogle, logout };
+  const updateUsername = async (newUsername: string) => {
+    if (!user) return;
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      await setDoc(
+        userRef,
+        { username: newUsername, updatedAt: Timestamp.now() },
+        { merge: true }
+      );
+      setUsername(newUsername);
+    } catch (error) {
+      console.error('Error updating username:', error);
+    }
+  };
+
+  return { user, loading, username, signInWithGoogle, logout, updateUsername };
 };
