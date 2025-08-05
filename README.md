@@ -12,6 +12,7 @@ A modern, feature-rich link shortener application built with React, TypeScript, 
 - ⚡ **Real-time Updates**: Live sync across all your devices
 - 🎯 **Custom Aliases**: Create branded short links
 - 📝 **Link Management**: Add titles, descriptions, and organize your links
+- 👤 **Usernames**: Choose a username after signing in
 
 ## Tech Stack
 
@@ -33,10 +34,11 @@ A modern, feature-rich link shortener application built with React, TypeScript, 
 
 #### `users/{userId}`
 ```javascript
-{
+{ 
   uid: string,
   displayName: string,
   email: string,
+  username?: string,
   photoURL: string,
   createdAt: timestamp,
   updatedAt: timestamp

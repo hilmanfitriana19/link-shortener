@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
-import { 
-  collection, 
-  query, 
-  where, 
-  orderBy, 
-  onSnapshot, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  doc, 
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
   increment,
-  Timestamp 
+  Timestamp,
+  getDocs,
+  limit
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Link } from '../types';
@@ -71,6 +73,17 @@ export const useLinks = (userId: string | null) => {
     }
 
     try {
+      const existing = await getDocs(
+        query(
+          collection(db, 'links'),
+          where('shortCode', '==', linkData.shortCode),
+          limit(1)
+        )
+      );
+      if (!existing.empty) {
+        throw new Error('ALIAS_EXISTS');
+      }
+
       const basePath = window.location.origin + import.meta.env.BASE_URL;
       const shortUrl = `${basePath.replace(/\/$/, '')}/${userId}/${linkData.shortCode}`;
       await addDoc(collection(db, 'links'), {
